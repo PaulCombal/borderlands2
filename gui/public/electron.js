@@ -6,14 +6,14 @@ const isDev = require('electron-is-dev');
 
 let mainWindow;
 
-createWindow = () => {
+const createWindow = () => {
 	mainWindow = new BrowserWindow({
 		backgroundColor: '#F7F7F7',
 		minWidth: 880,
 		show: false,
 		titleBarStyle: 'hidden',
 		webPreferences: {
-			nodeIntegration: false,
+			nodeIntegration: true,
 			preload: __dirname + '/preload.js',
 		},
 		height: 860,
@@ -59,7 +59,7 @@ createWindow = () => {
 	});
 };
 
-generateMenu = () => {
+const generateMenu = () => {
 	const template = [
 		{
 			label: 'File',
