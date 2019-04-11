@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import {classes} from "../styles/images";
+import '../styles/saveSelector.scss';
+import {Link} from 'react-router-dom';
 
 const fs = window.require('fs');
 const homedir = window.require('os').homedir();
@@ -86,9 +89,35 @@ export default class SaveSelector extends Component {
         });
     };
 
+    /**
+     * data is the parsed content you can find in /tmp/b2saves/unique.json
+     * TODO: Add support for more classes in the switch statement
+     *
+     * @param data
+     * @param unique
+     */
     formatSaveGame = (data, unique) => {
         const name = data.appearance.name;
-        const obj = {name, unique};
+        const level = data.level;
+        let char_class = data.class;
+        let image = null;
+
+        switch (char_class) {
+            case 'GD_Assassin.Character.CharClass_Assassin':
+                char_class = 'zero';
+                image = classes.zero;
+                break;
+            case 'GD_Tulip_Mechromancer.Character.CharClass_Mechromancer':
+                char_class = 'mechromancer';
+                image = classes.mechromancer;
+                break;
+
+            default:
+                image = classes.zero;
+                char_class = 'unknown_class';
+                break;
+        }
+        const obj = {name, char_class, unique, image, level};
 
         // TODO: mutex or semaphore or whatever
         let saves = this.state.saveFiles;
@@ -97,7 +126,20 @@ export default class SaveSelector extends Component {
     };
 
     renderSaveFiles = () => {
-        return this.state.saveFiles.map(s => (<div key={s.unique}>{s.name}</div>))
+        return this.state.saveFiles.map(s => (
+            <Link style={{all: 'unset'}} to='/edit'>
+                <div key={s.unique} className='save-card'>
+                    <div>
+                        <img src={s.image} alt='class thumbnail' height={50} width={50}/>
+                    </div>
+                    <div>
+                        <h3>{s.name}</h3>
+                        <div>Level {s.level}</div>
+                    </div>
+                </div>
+            </Link>
+            )
+        );
     };
 
     render() {

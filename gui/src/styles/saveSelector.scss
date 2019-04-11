@@ -1,0 +1,19 @@
+.save-card {
+  background: #ece8e5;
+  padding: 10px 20px;
+  border-radius: 2px;
+  margin-top: 10px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  transition: 200ms;
+
+  & > div:first-child {
+    margin-right: 20px;
+  }
+
+  &:hover {
+    background: #f3f3f3;
+    transition: 200ms;
+  }
+}
